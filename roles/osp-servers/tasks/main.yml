@@ -1,3 +1,30 @@
 ---
 
 # tasks file for osp.servers
+
+- name: create vm instances for app, db and front end with help of veriables defined in vars/main.yml
+  os_server:
+   cloud: "{{ cloud_infra |default('openstack') }}"
+   state: "{{ item.state | default('present') }}"
+   name: "{{ item.name }}"
+   image: "{{ item.image | default('rhel-8.1') }}"
+   key_name: "{{ item.key_name |default('ansible_ssh') }}"
+   security_groups: "{{ item.security_group |default('default') }}" 
+   delete_fip: True
+   meta: "{{ item.meta }}"
+   flavor: "{{ item.flavor | default(m1.medium) }}"
+   nics:
+    - net-name: int_network
+  loop:
+   "{{ osp_servers }}"
+
+- name: assign ip to each of created instances(app, db, frontend)
+  os_floating_ip:
+   cloud: "{{ cloud_infra |default('openstack') }}"
+   state: present
+   reuse: yes
+   network: ext_network
+   wait: True
+   timeout: 200
+   server: "{{ item.name }}"
+  loop: "{{ osp_servers }}"
