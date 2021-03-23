@@ -15,6 +15,7 @@
    flavor: "{{ item.flavor | default(m1.medium) }}"
    nics:
     - net-name: int_network
+   userdata: "{{ lookup('file', 'user_data') }}"
   loop:
    "{{ osp_servers }}"
 
