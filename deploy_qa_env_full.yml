@@ -35,18 +35,10 @@
    - lb_dep 
    - all
 
-#- name: run smoketest on app and db
-#  hosts: apps:appdbs 
-#  roles:
-#   - smoketest
-#  tags:
-#   - all
-#   - smoketest_app_db
-
-#- name: run smoketest on apps
-#  hosts: apps
-#  roles:
-#   - smoketest
-#  tags:
-#   - all
-#   - smoketest_app
+- name: run smoketest for apps
+  hosts: apps
+  roles:
+   - lb-tier 
+  tags:
+   - all
+   - smoketest_app
