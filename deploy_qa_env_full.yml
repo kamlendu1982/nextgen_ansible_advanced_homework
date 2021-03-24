@@ -4,6 +4,18 @@
   hosts: localhost
   roles:
    - osp-servers
+  tags:
+   - all
+   - delete_servers 
+
+- name: deploying db layer
+  hosts: appdbs
+  become: true
+  roles:
+   - db-tier
+  tags:
+   - all
+   - db_dep 
 
 - name: deploying app layer
   hosts: apps
@@ -23,15 +35,6 @@
    - lb_dep 
    - all
 
-- name: deploying app layer
-  hosts: appdbs
-  become: true
-  roles:
-   - db-tier
-  tags:
-   - all
-   - db_dep 
-
 - name: run smoketest on app and db
   hosts: apps:appdbs 
   roles:
@@ -40,10 +43,10 @@
    - all
    - smoketest_app_db
 
-- name: run smoketest on apps
-  hosts: apps
-  roles:
-   - smoketest
-  tags:
-   - all
-   - smoketest_app
+#- name: run smoketest on apps
+#  hosts: apps
+#  roles:
+#   - smoketest
+#  tags:
+#   - all
+#   - smoketest_app

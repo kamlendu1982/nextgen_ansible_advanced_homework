@@ -7,14 +7,14 @@
 
     - name: fix the release server version 
       command:
-        cmd: echo 7 >> /etc/yum/vars/releasever
+        cmd: echo 7 > /etc/yum/vars/releasever
 
-    - name: enable the repo
-      yum_repository:
-        name: epel
-        baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
-        gpgcheck: no
-        description: EPEL YUM repo
+#    - name: enable the repo
+#      yum_repository:
+#        name: epel
+#        baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+#        gpgcheck: no
+#        description: EPEL YUM repo
 
     - name: copy repo file 
       copy:
@@ -77,6 +77,7 @@
     - name: Initialize flask app database resources
       command: "{{ virtualenv_home }}/{{ flask_app_name }}/bin/python3 {{ flask_home }}/{{ flask_app_name }}/config.py"
       run_once: true
+      ignore_errors: true
 
     - name: "Generate {{ flask_app_name }} startup script"    
       template:
@@ -95,4 +96,5 @@
         name: "{{ flask_app_name }}.service"
         state: restarted 
         enabled: yes
+      ignore_errors: True
 

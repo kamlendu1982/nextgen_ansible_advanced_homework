@@ -7,14 +7,14 @@
 
     - name: fix the release server version 
       command:
-        cmd: echo 7 >> /etc/yum/vars/releasever
+        cmd: echo 7 > /etc/yum/vars/releasever
 
-    - name: enable the repo
-      yum_repository:
-        name: epel
-        baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
-        gpgcheck: no
-        description: EPEL YUM repo
+#    - name: enable the repo
+#      yum_repository:
+#        name: epel
+#        baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+#        gpgcheck: no
+#        description: EPEL YUM repo
 
     - name: copy repo file
       copy:

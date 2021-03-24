@@ -7,14 +7,14 @@
 
 - name: fix the release server version 
   command:
-    cmd: echo 7 >> /etc/yum/vars/releasever
+    cmd: echo 7 > /etc/yum/vars/releasever
 
-- name: enable the repo
-  yum_repository:
-    name: epel
-    baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
-    gpgcheck: no
-    description: EPEL YUM repo
+#- name: enable the repo
+#  yum_repository:
+#    name: epel
+#    baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+#    gpgcheck: no
+#    description: EPEL YUM repo
 
 - name: copy repo file
   copy:
@@ -26,7 +26,7 @@
    name: '*'
    state: latest
    skip_broken: True
-   ignore_errors: True
+  ignore_errors: True
 
 - name: Install load balancer packages
   package:
@@ -38,10 +38,12 @@
     src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
   notify: restart_haproxy
+  ignore_errors: True
 
 - name: Enable Haproxy
   service:
     name: haproxy
     state: started
     enabled: true
-
+  ignore_errors: True
+  
