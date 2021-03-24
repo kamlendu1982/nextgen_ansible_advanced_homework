@@ -35,13 +35,13 @@
    - lb_dep 
    - all
 
-- name: run smoketest on app and db
-  hosts: apps:appdbs 
-  roles:
-   - smoketest
-  tags:
-   - all
-   - smoketest_app_db
+#- name: run smoketest on app and db
+#  hosts: apps:appdbs 
+#  roles:
+#   - smoketest
+#  tags:
+#   - all
+#   - smoketest_app_db
 
 #- name: run smoketest on apps
 #  hosts: apps
