@@ -1,4 +1,14 @@
 ---
+    - name: fix the release server version 
+      file:
+        path: /etc/yum/vars/releasever
+        state: touch
+        mode: 0666
+
+    - name: fix the release server version 
+      command:
+        cmd: echo 7 >> /etc/yum/vars/releasever
+
     - name: enable the repo
       yum_repository:
         name: epel
@@ -6,10 +16,17 @@
         gpgcheck: no
         description: EPEL YUM repo
 
+    - name: copy repo file
+      copy:
+        src: open_ans-tower-lab-ng.repo
+        dest: /etc/yum.repos.d/open_ans-tower-lab-ng.repo
+
     - name: update the repo
       yum:
         name: '*'
         state: latest
+        skip_broken: True
+      ignore_errors: True
 
     - name: Install Postgres packages
       package:
