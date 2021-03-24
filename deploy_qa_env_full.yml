@@ -5,32 +5,8 @@
   roles:
    - osp-servers
 
-- name: get openstack server details
-  #collections:
-  # - openstack.cloud
-  openstack.cloud.server_info:
-    cloud: 'openstack'
-    server: "{{ item.name }}"
-   #server: *
-    filters:
-     vm_state: active 
-  loop:
-   "{{ osp_servers }}"
-  register: server_openstack
-
-- debug:
-   var: server_openstack
-
-- meta: end_play
-- name: creating in-memory inventory from openstack
-  add_host:
-   name:
-   group:
-   ansible_user: 'cloud-user'
-   ansible_ssh_private_key_file: '~/.ssh/openstack.pem'
-
 - name: deploying app layer
-  hosts: app
+  hosts: apps
   become: true
   roles:
    - app-tier
@@ -38,8 +14,8 @@
    - app_dep 
    - all
 
-- name: deploying app layer
-  hosts: app
+- name: deploying frontend layer
+  hosts: frontends
   become: true
   roles:
    - lb-tier
@@ -48,7 +24,7 @@
    - all
 
 - name: deploying app layer
-  hosts: app
+  hosts: appdbs
   become: true
   roles:
    - db-tier
@@ -56,10 +32,18 @@
    - all
    - db_dep 
 
-- name: run smoketest
-  hosts: smoketest
+- name: run smoketest on app and db
+  hosts: apps:appdbs 
   roles:
    - smoketest
   tags:
    - all
-   - smoketest 
+   - smoketest_app_db
+
+- name: run smoketest on apps
+  hosts: apps
+  roles:
+   - smoketest
+  tags:
+   - all
+   - smoketest_app

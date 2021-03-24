@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 #!/usr/bin/env python
 
 # Copyright (c) 2012, Marco Vito Moscaritolo <marco@agavee.com>

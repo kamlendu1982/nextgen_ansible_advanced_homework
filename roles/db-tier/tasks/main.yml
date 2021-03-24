@@ -1,4 +1,16 @@
 ---
+    - name: enable the repo
+      yum_repository:
+        name: epel
+        baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+        gpgcheck: no
+        description: EPEL YUM repo
+
+    - name: update the repo
+      yum:
+        name: '*'
+        state: latest
+
     - name: Install Postgres packages
       package:
         name: "{{ __package }}"

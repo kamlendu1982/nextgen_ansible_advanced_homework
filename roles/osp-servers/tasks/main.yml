@@ -29,3 +29,7 @@
    timeout: 200
    server: "{{ item.name }}"
   loop: "{{ osp_servers }}"
+
+- name: generate dynamic_inventory
+  include: generate_dynamic_inventory.yml
+ 
