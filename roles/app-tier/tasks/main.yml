@@ -6,8 +6,10 @@
         mode: 0666
 
     - name: fix the release server version 
-      command:
-        cmd: echo 7 > /etc/yum/vars/releasever
+      copy:
+        src: releasever
+        dest: /etc/yum/vars/releasever
+        force: yes 
 
 #    - name: enable the repo
 #      yum_repository:
