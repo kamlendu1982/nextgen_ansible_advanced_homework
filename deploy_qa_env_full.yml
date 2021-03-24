@@ -36,9 +36,9 @@
    - all
 
 - name: run smoketest for apps
-  hosts: apps
+  hosts: frontends
   roles:
-   - lb-tier 
+   - smoketest
   tags:
    - all
    - smoketest_app

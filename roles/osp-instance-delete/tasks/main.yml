@@ -1,5 +1,21 @@
 ---
-# tasks file for roles/osp-instance-delete
-  - name: Fetch Instance Info
-  - name: Delete instances
-   
+
+# tasks file for osp.servers
+
+- name: create/delete vm instances for app, db and front end with help of veriables defined in vars/main.yml
+  os_server:
+   cloud: "{{ cloud_infra |default('openstack') }}"
+   state: "{{ item.state | default('present') }}"
+   name: "{{ item.name }}"
+   image: "{{ item.image | default('rhel-8.1') }}"
+   key_name: "{{ item.key_name |default('ansible_ssh') }}"
+   security_groups: "{{ item.security_group |default('default') }}" 
+   delete_fip: True
+   meta: "{{ item.meta }}"
+   flavor: "{{ item.flavor | default(m1.medium) }}"
+   nics:
+    - net-name: int_network
+   userdata: "{{ lookup('file', 'user_data') }}"
+  loop:
+   "{{ osp_servers }}"
+

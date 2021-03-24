@@ -4,28 +4,28 @@
 cloud_infra: openstack
 osp_servers:
   - name: frontend
-    state: absent
+    state: present
     image: rhel-guest
     key_name: ansible_ssh
     flavor: m1.medium
     security_group: frontend
     meta: "group=frontends,deployment_name=QA"
   - name: app1
-    state: absent
+    state: present
     image: rhel-guest
     key_name: ansible_ssh
     flavor: m1.medium
     security_group: apps
     meta: "group=apps, deployment_name=QA"
   - name: app2
-    state: absent
+    state: present
     image: rhel-guest
     key_name: ansible_ssh
     flavor: m1.medium
     security_group: apps
     meta: "group=apps,deployment_name=QA"
   - name: db
-    state: absent
+    state: present
     image: rhel-guest
     key_name: ansible_ssh
     flavor: m1.medium

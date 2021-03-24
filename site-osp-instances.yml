@@ -1,6 +1,44 @@
-- hosts: localhost
-  connection: local
-  become: no
-  gather_facts: true
+---
+- name: create openstack infra
+  gather_facts: False
+  hosts: localhost 
   roles:
    - osp-servers
+  tags:
+   - all
+   - delete_servers 
+
+- name: deploying db layer
+  hosts: appdbs
+  become: true
+  roles:
+   - db-tier
+  tags:
+   - all
+   - db_dep 
+
+- name: deploying app layer
+  hosts: apps
+  become: true
+  roles:
+   - app-tier
+  tags:
+   - app_dep 
+   - all
+
+- name: deploying frontend layer
+  hosts: frontends
+  become: true
+  roles:
+   - lb-tier
+  tags:
+   - lb_dep 
+   - all
+
+- name: run smoketest for apps
+  hosts: apps
+  roles:
+   - lb-tier 
+  tags:
+   - all
+   - smoketest_app

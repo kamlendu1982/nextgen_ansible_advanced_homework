@@ -1,11 +1,19 @@
-- hosts: workstation
-  gather_facts: false
-  tasks:
-  - name: OpenStack servers
-  - name: Curl website
+---
+- name: create openstack infra
+  gather_facts: False
+  hosts: localhost 
+  roles:
+   - role: osp-servers
+     tags: fetch_dynamic_inventory_os
+  tags:
+   - all
 
-  - name: Fail if 'Ansible has done its job' is not in the page content
-    fail:
-    when: "'Ansible has done its job' not in webpage.results[0].content"
-    tags:
-      - osp.smoke
+- name: run smoketest for apps
+  hosts: frontends 
+  roles:
+   - smoketest 
+  register: smoke_result
+
+- name: delete infra in case smoketest fails
+  include: site-osp-delete.yml
+  when: smoke_result.stdout.find('alive') != 1
