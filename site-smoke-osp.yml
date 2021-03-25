@@ -1,13 +1,4 @@
 ---
-- name: create openstack infra
-  gather_facts: False
-  hosts: localhost 
-  roles:
-   - role: osp-servers
-     tags: fetch_dynamic_inventory_os
-  tags:
-   - all
-
 - name: run smoketest for apps
   hosts: frontends 
   roles:
